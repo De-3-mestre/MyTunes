@@ -27,10 +27,10 @@ public class Song {
 
         MediaPlayer mdp = new MediaPlayer(media);
 
-        mdp.setOnReady(()->{
+        mdp.setOnReady(() -> {
             double millis = getMedia().getDuration().toMillis();
-            long minutes = (long) ((millis/1000)/60);
-            long seconds = (long) ((millis/1000) % 60);
+            long minutes = (long) ((millis / 1000) / 60);
+            long seconds = (long) ((millis / 1000) % 60);
             setDurationString(minutes + ":" + seconds);
         });
     }
