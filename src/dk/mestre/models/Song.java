@@ -6,6 +6,7 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
 import java.io.File;
+import java.nio.file.Files;
 import java.util.concurrent.TimeUnit;
 
 public class Song {
@@ -17,12 +18,13 @@ public class Song {
     /**
      * Creates a new instance of `Song` based on the file given
      *
-     * @param file the file that contains the song information
+     * @param title The song title
+     * @param path The absolute path to the song
      * @see File
      **/
-    public Song(File file) {
-        this.title = file.getName();
-        this.media = new Media(file.toURI().toString());
+    public Song(String title, String path) {
+        this.title = title;
+        this.media = new Media(path);
         this.durationString = new SimpleStringProperty("");
 
         MediaPlayer mdp = new MediaPlayer(media);
