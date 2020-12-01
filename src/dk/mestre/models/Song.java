@@ -13,6 +13,7 @@ public class Song {
 
     private String title;
     private StringProperty durationString;
+    private String path;
     private Media media;
 
     /**
@@ -24,6 +25,7 @@ public class Song {
      **/
     public Song(String title, String path) {
         this.title = title;
+        this.path = path;
         this.media = new Media(path);
         this.durationString = new SimpleStringProperty("");
 
@@ -51,5 +53,13 @@ public class Song {
 
     public Media getMedia() {
         return media;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
     }
 }
