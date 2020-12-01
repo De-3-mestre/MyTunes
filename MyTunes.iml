@@ -9,5 +9,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="org.openjfx:javafx-fxml:16-ea+4" level="project" />
     <orderEntry type="library" name="org.openjfx:javafx-media:16-ea+4" level="project" />
+    <orderEntry type="library" name="com.microsoft.sqlserver:mssql-jdbc:9.1.0.jre15-preview" level="project" />
   </component>
 </module>
