@@ -6,8 +6,6 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
 import java.io.File;
-import java.nio.file.Files;
-import java.util.concurrent.TimeUnit;
 
 public class Song {
 
