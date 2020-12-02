@@ -64,7 +64,7 @@
                   <Font name="System Bold" size="14.0" />
                </font>
             </Label>
-            <TableView fixedCellSize="3.0" minHeight="350.0" minWidth="220.0" prefHeight="350.0" prefWidth="220.0">
+            <TableView fx:id="playlistTable" minHeight="350.0" minWidth="220.0" prefHeight="350.0" prefWidth="220.0">
               <columns>
                 <TableColumn fx:id="playlistName" maxWidth="100.0" prefWidth="100.0" text="Name" />
                 <TableColumn fx:id="playlistSongs" prefWidth="46.0" text="Songs" />
@@ -163,7 +163,7 @@
                         <Font name="System Bold" size="14.0" />
                      </font>
                   </Label>
-                  <TableView fixedCellSize="2.0" minHeight="350.0" prefHeight="350.0" prefWidth="200.0">
+                  <TableView fx:id="songTable" minHeight="350.0" prefHeight="350.0" prefWidth="200.0">
                     <columns>
                       <TableColumn fx:id="selectedPlaylistNumber" maxWidth="30.0" minWidth="30.0" prefWidth="30.0" text="#" />
                       <TableColumn fx:id="selectedPlaylistSong" editable="false" prefWidth="149.0" text="Song" />
@@ -193,7 +193,7 @@
                         <Font name="System Bold" size="14.0" />
                      </font>
                   </Label>
-                  <TableView fixedCellSize="4.0" minHeight="350.0" prefHeight="350.0" prefWidth="200.0">
+                  <TableView fx:id="allSongsTable" minHeight="350.0" prefHeight="350.0" prefWidth="200.0">
                     <columns>
                       <TableColumn fx:id="songName" minWidth="90.0" prefWidth="121.0" text="Title" />
                       <TableColumn fx:id="songArtist" prefWidth="126.0" text="Artist" />

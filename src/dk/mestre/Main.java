@@ -1,5 +1,7 @@
 package dk.mestre;
 
+import dk.mestre.DAL.Database;
+import dk.mestre.models.Song;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -19,5 +21,9 @@ public class Main extends Application {
 
         stage.setScene(scene);
         stage.show();
+
+        /*Song song = new Song("aiwfc","C:\\Users\\skupi\\Desktop\\song.mp3","dak","mester dak");
+        Database db = new Database();
+        db.insertSong(song);*/
     }
 }

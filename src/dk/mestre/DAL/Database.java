@@ -29,7 +29,9 @@ public class Database extends Configuration {
         while (res.next()) {
             songs.add(new Song(
                     res.getString("songName"),
-                    res.getString("songPath")
+                    res.getString("songPath"),
+                    res.getString("songCategory"),
+                    res.getString("songArtist")
             ));
         }
 
@@ -44,9 +46,11 @@ public class Database extends Configuration {
 
         Connection connection = getConnection();
 
-        PreparedStatement pstmt = connection.prepareStatement("INSERT INTO Song (songName, songPath) VALUES (?, ?)");
+        PreparedStatement pstmt = connection.prepareStatement("INSERT INTO Song (songName, songPath, songCategory, songArtist) VALUES (?, ?, ?, ?)");
         pstmt.setString(1, song.getTitle());
         pstmt.setString(2, song.getPath());
+        pstmt.setString(3, song.getCategory());
+        pstmt.setString(4, song.getArtist());
 
         pstmt.execute();
 
