@@ -99,11 +99,11 @@ public class Database extends Configuration {
         dataSource.setServerName(configValues.get("DATABASE_SERVER"));
 
         try {
-            Connection connection = dataSource.getConnection();
-            return connection;
+            return dataSource.getConnection();
         } catch (SQLServerException e) {
             e.printStackTrace();
             return null;
         }
     }
+
 }
