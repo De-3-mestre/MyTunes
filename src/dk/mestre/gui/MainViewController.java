@@ -2,11 +2,13 @@ package dk.mestre.gui;
 
 import dk.mestre.BLL.MusicPlayer;
 import dk.mestre.BLL.SongManager;
-import dk.mestre.models.Playlist;
 import dk.mestre.models.Song;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Slider;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 
@@ -27,6 +29,8 @@ public class MainViewController implements Initializable {
     @FXML private TableColumn<Song, String> songCategory;
     @FXML private TableColumn<Song, String> songTime;
 
+    @FXML private Slider volumeSlider;
+
     private Song selectedSong = null;
 
     public MainViewController(){
@@ -37,6 +41,15 @@ public class MainViewController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         initAllSongsTable();
+
+        volumeSlider.valueProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observableValue, Number oldVal, Number newVal) {
+                double val = newVal.doubleValue() / 100;
+                musicPlayer.setVolume(val);
+            }
+        });
+
     }
 
     private void initAllSongsTable(){

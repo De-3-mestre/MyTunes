@@ -7,20 +7,26 @@ public class MusicPlayer {
 
     private static MediaPlayer mediaPlayer = null;
 
-    public void playSong(Song song){
+    private double volume = 0;
+
+    public void playSong(Song song) {
         stopPlaying();
         mediaPlayer = new MediaPlayer(song.getMedia());
+        mediaPlayer.setVolume(volume);
         mediaPlayer.play();
     }
 
-    public void stopPlaying(){
-        if(mediaPlayer == null) return;
+    public void stopPlaying() {
+        if (mediaPlayer == null) return;
         mediaPlayer.stop();
     }
 
-    public void setVolume(){}
+    public void setVolume(double volume) {
+        this.volume = volume;
+        mediaPlayer.setVolume(this.volume);
+    }
 
-    public double getPlayTime(){
+    public double getPlayTime() {
         return mediaPlayer.getCurrentTime().toSeconds();
     }
 
