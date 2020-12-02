@@ -1,5 +1,6 @@
 package dk.mestre.gui;
 
+import dk.mestre.BLL.MusicPlayer;
 import dk.mestre.BLL.SongManager;
 import dk.mestre.models.Playlist;
 import dk.mestre.models.Song;
@@ -14,6 +15,8 @@ import java.util.ResourceBundle;
 
 public class MainViewController implements Initializable {
 
+    private MusicPlayer musicPlayer;
+
     private SongManager songManager;
 
     private ObservableList<Song> songs;
@@ -24,10 +27,11 @@ public class MainViewController implements Initializable {
     @FXML private TableColumn<Song, String> songCategory;
     @FXML private TableColumn<Song, String> songTime;
 
-    private Song allSongsSelected = null;
+    private Song selectedSong = null;
 
     public MainViewController(){
         songManager = new SongManager();
+        musicPlayer = new MusicPlayer();
     }
 
     @Override
@@ -48,7 +52,7 @@ public class MainViewController implements Initializable {
         allSongsTable.setItems(songs);
 
         allSongsTable.getSelectionModel().selectedItemProperty().addListener((observableValue, oldVal, newVal) -> {
-            allSongsSelected = newVal;
+            selectedSong = newVal;
         });
     }
 
@@ -95,6 +99,8 @@ public class MainViewController implements Initializable {
 
     @FXML
     private void handlePlaySong() {
+        if(selectedSong != null)
+            musicPlayer.playSong(selectedSong);
     }
 
     @FXML
