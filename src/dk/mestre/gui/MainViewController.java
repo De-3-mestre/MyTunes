@@ -24,23 +24,32 @@ public class MainViewController implements Initializable {
     @FXML private TableColumn<Song, String> songCategory;
     @FXML private TableColumn<Song, String> songTime;
 
+    private Song allSongsSelected = null;
+
     public MainViewController(){
         songManager = new SongManager();
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        initAllSongsTable();
+    }
+
+    private void initAllSongsTable(){
         songs = songManager.getSongs();
         if (songs == null)
             throw new RuntimeException("Error retrieving songs from database");
-        
+
         songName.setCellValueFactory(cellData -> cellData.getValue().titleProperty());
         songArtist.setCellValueFactory(cellData -> cellData.getValue().artistProperty());
         songCategory.setCellValueFactory(cellData -> cellData.getValue().categoryProperty());
         songTime.setCellValueFactory(cellData -> cellData.getValue().durationStringProperty());
 
-
         allSongsTable.setItems(songs);
+
+        allSongsTable.getSelectionModel().selectedItemProperty().addListener((observableValue, oldVal, newVal) -> {
+            allSongsSelected = newVal;
+        });
     }
 
     @FXML
@@ -69,6 +78,7 @@ public class MainViewController implements Initializable {
 
     @FXML
     private void handleNewSong() {
+
     }
 
     @FXML
