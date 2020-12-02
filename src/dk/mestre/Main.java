@@ -22,7 +22,7 @@ public class Main extends Application {
         stage.setScene(scene);
         stage.show();
 
-        /*Song song = new Song("aiwfc","C:\\Users\\skupi\\Desktop\\song.mp3","dak","mester dak");
+        /*Song song = new Song("aiwfc","C:\\Users\\skupi\\Desktop\\song two.mp3","dak","mester dak");
         Database db = new Database();
         db.insertSong(song);*/
     }

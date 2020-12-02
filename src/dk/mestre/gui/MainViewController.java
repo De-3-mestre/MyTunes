@@ -8,9 +8,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Slider;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -29,9 +27,14 @@ public class MainViewController implements Initializable {
     @FXML private TableColumn<Song, String> songCategory;
     @FXML private TableColumn<Song, String> songTime;
 
+    @FXML private Label currentlyPlaying;
+
+    @FXML private Button playSong;
+
     @FXML private Slider volumeSlider;
 
     private Song selectedSong = null;
+    private Song playingSong = null;
 
     public MainViewController(){
         songManager = new SongManager();
@@ -42,6 +45,7 @@ public class MainViewController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         initAllSongsTable();
 
+        volumeSlider.setValue(50);
         volumeSlider.valueProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observableValue, Number oldVal, Number newVal) {
@@ -112,8 +116,21 @@ public class MainViewController implements Initializable {
 
     @FXML
     private void handlePlaySong() {
-        if(selectedSong != null)
+        if(selectedSong != playingSong) {
             musicPlayer.playSong(selectedSong);
+            currentlyPlaying.setText(selectedSong.getTitle() + " - " + selectedSong.getArtist());
+            playingSong = selectedSong;
+            playSong.setText("⏸");
+        }
+        else{
+            if(musicPlayer.getIsPaused()){
+                musicPlayer.unpauseSong();
+                playSong.setText("⏸");
+            }else{
+                musicPlayer.pauseSong();
+                playSong.setText("⯈");
+            }
+        }
     }
 
     @FXML
