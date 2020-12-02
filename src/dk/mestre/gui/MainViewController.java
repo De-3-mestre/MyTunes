@@ -70,6 +70,11 @@ public class MainViewController implements Initializable {
 
         allSongsTable.getSelectionModel().selectedItemProperty().addListener((observableValue, oldVal, newVal) -> {
             selectedSong = newVal;
+            if(selectedSong != playingSong){
+                playSong.setText("⯈");
+            }else{
+                playSong.setText("⏸");
+            }
         });
     }
 
