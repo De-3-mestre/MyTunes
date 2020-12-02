@@ -14,6 +14,9 @@ public class Song {
     private StringProperty path;
     private StringProperty category;
     private StringProperty artist;
+
+    private double timeInMilis = 0;
+
     private Media media;
 
     /**
@@ -34,9 +37,9 @@ public class Song {
         MediaPlayer mdp = new MediaPlayer(media);
 
         mdp.setOnReady(() -> {
-            double millis = getMedia().getDuration().toMillis();
-            long minutes = (long) ((millis / 1000) / 60);
-            long seconds = (long) ((millis / 1000) % 60);
+            timeInMilis = getMedia().getDuration().toMillis();
+            long minutes = (long) ((timeInMilis / 1000) / 60);
+            long seconds = (long) ((timeInMilis / 1000) % 60);
             if(seconds < 10)
                 setDurationString(minutes + ":0" + seconds);
             else
@@ -110,5 +113,9 @@ public class Song {
 
     public void setArtist(String artist) {
         this.artist.set(artist);
+    }
+
+    public double getTimeInMilis(){
+        return this.timeInMilis;
     }
 }

@@ -1,9 +1,15 @@
 package dk.mestre.gui;
 
 import dk.mestre.BLL.MusicPlayer;
+import dk.mestre.BLL.PlaylistManager;
 import dk.mestre.BLL.SongManager;
+import dk.mestre.models.Playlist;
 import dk.mestre.models.Song;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableNumberValue;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -18,14 +24,21 @@ public class MainViewController implements Initializable {
     private MusicPlayer musicPlayer;
 
     private SongManager songManager;
+    private PlaylistManager playlistManager;
 
     private ObservableList<Song> songs;
+    private ObservableList<Playlist> playlists;
 
     @FXML private TableView<Song> allSongsTable;
     @FXML private TableColumn<Song, String> songName;
     @FXML private TableColumn<Song, String> songArtist;
     @FXML private TableColumn<Song, String> songCategory;
     @FXML private TableColumn<Song, String> songTime;
+
+    @FXML private TableView<Playlist> playlistTable;
+    @FXML private TableColumn<Playlist, String> playlistName;
+    @FXML private TableColumn<Playlist, Number> playlistSongs;
+    @FXML private TableColumn<Playlist, String> playlistTime;
 
     @FXML private Label currentlyPlaying;
 
@@ -38,12 +51,14 @@ public class MainViewController implements Initializable {
 
     public MainViewController(){
         songManager = new SongManager();
+        playlistManager = new PlaylistManager();
         musicPlayer = new MusicPlayer();
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         initAllSongsTable();
+        initPlaylistTable();
 
         volumeSlider.setValue(50);
         volumeSlider.valueProperty().addListener(new ChangeListener<Number>() {
@@ -54,6 +69,39 @@ public class MainViewController implements Initializable {
             }
         });
 
+    }
+
+    private void initPlaylistTable(){
+        playlists = playlistManager.getPlaylists();
+        if(playlists == null)
+            throw new RuntimeException("Error retrieving playlists from database");
+
+        playlistName.setCellValueFactory(cellData->cellData.getValue().nameProperty());
+        playlistSongs.setCellValueFactory(cellData->{
+            ObservableNumberValue num = new SimpleIntegerProperty(cellData.getValue().getSongs().size());
+            return num;
+        });
+        playlistTime.setCellValueFactory(cellData->{
+
+            double sum = 0;
+            for(Song song : cellData.getValue().getSongs()){
+                sum += song.getTimeInMilis();
+            }
+
+            long minutes = (long) ((sum / 1000) / 60);
+            long seconds = (long) ((sum / 1000) % 60);
+
+            StringProperty ret;
+
+            if(seconds < 10)
+                ret = new SimpleStringProperty(minutes + ":0" + seconds);
+            else
+                ret = new SimpleStringProperty(minutes + ":" + seconds);
+
+            return ret;
+        });
+
+        playlistTable.setItems(playlists);
     }
 
     private void initAllSongsTable(){
