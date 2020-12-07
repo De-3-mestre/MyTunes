@@ -49,6 +49,8 @@ public class MainViewController implements Initializable {
     private Song selectedSong = null;
     private Song playingSong = null;
 
+    private Playlist selectedPlaylist = null;
+
     public MainViewController(){
         songManager = new SongManager();
         playlistManager = new PlaylistManager();
@@ -61,12 +63,9 @@ public class MainViewController implements Initializable {
         initPlaylistTable();
 
         volumeSlider.setValue(50);
-        volumeSlider.valueProperty().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observableValue, Number oldVal, Number newVal) {
-                double val = newVal.doubleValue() / 100;
-                musicPlayer.setVolume(val);
-            }
+        volumeSlider.valueProperty().addListener((observableValue, oldVal, newVal) -> {
+            double val = newVal.doubleValue() / 100;
+            musicPlayer.setVolume(val);
         });
 
     }
@@ -99,6 +98,10 @@ public class MainViewController implements Initializable {
                 ret = new SimpleStringProperty(minutes + ":" + seconds);
 
             return ret;
+        });
+
+        playlistTable.getSelectionModel().selectedItemProperty().addListener((observableValue, oldVal, newVal) -> {
+            selectedPlaylist = newVal;
         });
 
         playlistTable.setItems(playlists);
