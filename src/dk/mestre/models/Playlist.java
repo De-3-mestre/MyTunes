@@ -56,4 +56,8 @@ public class Playlist {
     public int getId() {
         return this.id;
     }
+
+    public void loadSongs() {
+
+    }
 }

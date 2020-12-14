@@ -21,7 +21,11 @@ public class PlaylistManager {
 
     public ObservableList<Playlist> getPlaylists(){
         try {
-            return FXCollections.observableArrayList(db.getAllPlaylists());
+            List<Playlist> playlists = db.getAllPlaylists();
+            for(Playlist p : playlists){
+                p.setSongs(FXCollections.observableArrayList(getSongsInList(p.getId())));
+            }
+            return FXCollections.observableArrayList(playlists);
         } catch (SQLException e) {
             e.printStackTrace();
             return null;

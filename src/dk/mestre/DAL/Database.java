@@ -103,7 +103,7 @@ public class Database extends Configuration {
 
         List<SongPlaylistPair> pairs = new ArrayList<>();
 
-        String query = "SELECT * FROM SongsInPlaylist";
+        String query = "SELECT * FROM SongsInList";
 
         Statement stmt = connection.createStatement();
         ResultSet res = stmt.executeQuery(query);
@@ -162,13 +162,17 @@ public class Database extends Configuration {
         pstmt.setInt(1, songId);
         ResultSet res = pstmt.executeQuery();
 
-        Song song = new Song(
-                res.getInt("id"),
-                res.getString("songTitle"),
-                res.getString("songPath"),
-                res.getString("songCategory"),
-                res.getString("songArtist")
-        );
+        Song song = null;
+
+        while(res.next()){
+            song = new Song(
+                    res.getInt("id"),
+                    res.getString("songName"),
+                    res.getString("songPath"),
+                    res.getString("songCategory"),
+                    res.getString("songArtist")
+            );
+        }
 
         connection.close();
         pstmt.close();
