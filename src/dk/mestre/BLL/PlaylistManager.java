@@ -7,6 +7,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class PlaylistManager {
@@ -26,7 +27,7 @@ public class PlaylistManager {
         }
     }
 
-    public List<Song> getSongsInList(int id){
+    public List<Song> getSongsInList(int playlistId){
         return null;
     }
 
