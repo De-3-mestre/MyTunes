@@ -119,4 +119,8 @@ public class Song {
     public double getTimeInMilis(){
         return this.timeInMilis;
     }
+
+    public int getId() {
+        return this.id;
+    }
 }

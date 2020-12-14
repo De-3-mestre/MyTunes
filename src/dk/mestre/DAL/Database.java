@@ -4,6 +4,7 @@ import com.microsoft.sqlserver.jdbc.SQLServerDataSource;
 import com.microsoft.sqlserver.jdbc.SQLServerException;
 import dk.mestre.models.Playlist;
 import dk.mestre.models.Song;
+import dk.mestre.models.SongPlaylistPair;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -90,6 +91,45 @@ public class Database extends Configuration {
 
         PreparedStatement pstmt = connection.prepareStatement("INSERT INTO Playlist (playlistName) VALUES (?)");
         pstmt.setString(1, playlist.getName());
+
+        pstmt.execute();
+
+        connection.close();
+        pstmt.close();
+    }
+
+    public List<SongPlaylistPair> getPairs() throws SQLException {
+        Connection connection = getConnection();
+
+        List<SongPlaylistPair> pairs = new ArrayList<>();
+
+        String query = "SELECT * FROM SongsInPlaylist";
+
+        Statement stmt = connection.createStatement();
+        ResultSet res = stmt.executeQuery(query);
+
+        while (res.next()) {
+            pairs.add(
+                    new SongPlaylistPair(
+                            res.getInt("songId"),
+                            res.getInt("playlistId")
+                    )
+            );
+        }
+
+        connection.close();
+        stmt.close();
+        res.close();
+
+        return pairs;
+    }
+
+    public void insertSongToPlaylist(Song song, Playlist playlist) throws SQLException{
+        Connection connection = getConnection();
+
+        PreparedStatement pstmt = connection.prepareStatement("INSERT INTO SongsInPlaylist (songId, playlistId) VALUES (?, ?)");
+        pstmt.setInt(1, song.getId());
+        pstmt.setInt(2, playlist.getId());
 
         pstmt.execute();
 

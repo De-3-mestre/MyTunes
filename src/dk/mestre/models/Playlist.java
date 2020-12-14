@@ -52,4 +52,8 @@ public class Playlist {
     public void setSongs(ObservableList<Song> songs) {
         this.songs = songs;
     }
+
+    public int getId() {
+        return this.id;
+    }
 }
