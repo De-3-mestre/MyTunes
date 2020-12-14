@@ -60,7 +60,7 @@ public class Database extends Configuration {
         pstmt.close();
     }
 
-    public List<Playlist> getAllPlaylists() throws SQLException{
+    public List<Playlist> getAllPlaylists() throws SQLException {
 
         List<Playlist> playlists = new ArrayList<>();
 
@@ -71,7 +71,7 @@ public class Database extends Configuration {
         Statement stmt = connection.createStatement();
         ResultSet res = stmt.executeQuery(query);
 
-        while(res.next()){
+        while (res.next()) {
             playlists.add(new Playlist(
                     res.getInt("id"),
                     res.getString("playlistName")
@@ -124,7 +124,7 @@ public class Database extends Configuration {
         return pairs;
     }
 
-    public void insertSongToPlaylist(Song song, Playlist playlist) throws SQLException{
+    public void insertSongToPlaylist(Song song, Playlist playlist) throws SQLException {
         Connection connection = getConnection();
 
         PreparedStatement pstmt = connection.prepareStatement("INSERT INTO SongsInPlaylist (songId, playlistId) VALUES (?, ?)");
@@ -152,4 +152,29 @@ public class Database extends Configuration {
         }
     }
 
+    public Song getSong(int songId) throws SQLException {
+
+        Connection connection = getConnection();
+
+        String query = "SELECT * FROM Song WHERE id=?";
+
+        PreparedStatement pstmt = connection.prepareStatement(query);
+        pstmt.setInt(1, songId);
+        ResultSet res = pstmt.executeQuery();
+
+        Song song = new Song(
+                res.getInt("id"),
+                res.getString("songTitle"),
+                res.getString("songPath"),
+                res.getString("songCategory"),
+                res.getString("songArtist")
+        );
+
+        connection.close();
+        pstmt.close();
+        res.close();
+
+        return song;
+
+    }
 }
