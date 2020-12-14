@@ -51,6 +51,8 @@ public class MainViewController implements Initializable {
     private TableView<Song> songTable;
     @FXML
     private TableColumn<Song, String> selectedPlaylistSong;
+    @FXML
+    private TableColumn<Song, Integer> selectedPlaylistNumber;
 
     @FXML
     private Label currentlyPlaying;
@@ -148,10 +150,11 @@ public class MainViewController implements Initializable {
 
     private void updateSelectedPlaylistSongs() {
         selectedPlaylistSong.setCellValueFactory(celldata -> celldata.getValue().titleProperty());
+        selectedPlaylistNumber.setCellValueFactory(celldata -> new SimpleIntegerProperty((selectedPlaylist.getSongs().indexOf(celldata.getValue()) + 1)).asObject());
         songTable.setItems(selectedPlaylist.getSongs());
 
         songTable.getSelectionModel().selectedItemProperty().addListener((observableValue, oldVal, newVal) -> {
-            if(newVal != null)
+            if (newVal != null)
                 selectedSong = newVal;
             if (selectedSong != playingSong) {
                 playSong.setText("⯈");
@@ -204,7 +207,7 @@ public class MainViewController implements Initializable {
 
     @FXML
     private void handlePlaySong() {
-        if(selectedSong != null) {
+        if (selectedSong != null) {
             if (selectedSong != playingSong) {
                 musicPlayer.playSong(selectedSong);
                 currentlyPlaying.setText(selectedSong.getTitle() + " - " + selectedSong.getArtist());
