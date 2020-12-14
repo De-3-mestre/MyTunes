@@ -9,6 +9,7 @@ import java.io.File;
 
 public class Song {
 
+    private int id;
     private StringProperty title;
     private StringProperty durationString;
     private StringProperty path;
@@ -26,7 +27,7 @@ public class Song {
      * @param path The absolute path to the song
      * @see File
      **/
-    public Song(String title, String path, String category, String artist) {
+    public Song(int id, String title, String path, String category, String artist) {
         this.title = new SimpleStringProperty(title);
         this.path = new SimpleStringProperty(path);
         this.category = new SimpleStringProperty(category);

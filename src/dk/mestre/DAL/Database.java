@@ -28,6 +28,7 @@ public class Database extends Configuration {
 
         while (res.next()) {
             songs.add(new Song(
+                    res.getInt("id"),
                     res.getString("songName"),
                     res.getString("songPath"),
                     res.getString("songCategory"),
