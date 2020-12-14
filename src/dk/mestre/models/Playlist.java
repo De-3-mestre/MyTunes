@@ -11,14 +11,16 @@ import java.util.List;
 
 public class Playlist {
 
+    private int id;
     private StringProperty name;
     private ObservableList<Song> songs;
 
-    public Playlist(String name){
-        this(name, null);
+    public Playlist(int id, String name){
+        this(id, name, null);
     }
 
-    public Playlist(String name, List<Song> songs){
+    public Playlist(int id, String name, List<Song> songs){
+        this.id = id;
         this.name = new SimpleStringProperty(name);
         this.songs = (songs == null) ? FXCollections.emptyObservableList() : FXCollections.observableArrayList(songs);
     }

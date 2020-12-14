@@ -71,6 +71,7 @@ public class Database extends Configuration {
 
         while(res.next()){
             playlists.add(new Playlist(
+                    res.getInt("id"),
                     res.getString("playlistName")
             ));
         }
