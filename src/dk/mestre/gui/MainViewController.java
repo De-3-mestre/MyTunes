@@ -8,9 +8,7 @@ import dk.mestre.models.Song;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableNumberValue;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -29,29 +27,46 @@ public class MainViewController implements Initializable {
     private ObservableList<Song> songs;
     private ObservableList<Playlist> playlists;
 
-    @FXML private TableView<Song> allSongsTable;
-    @FXML private TableColumn<Song, String> songName;
-    @FXML private TableColumn<Song, String> songArtist;
-    @FXML private TableColumn<Song, String> songCategory;
-    @FXML private TableColumn<Song, String> songTime;
+    @FXML
+    private TableView<Song> allSongsTable;
+    @FXML
+    private TableColumn<Song, String> songName;
+    @FXML
+    private TableColumn<Song, String> songArtist;
+    @FXML
+    private TableColumn<Song, String> songCategory;
+    @FXML
+    private TableColumn<Song, String> songTime;
 
-    @FXML private TableView<Playlist> playlistTable;
-    @FXML private TableColumn<Playlist, String> playlistName;
-    @FXML private TableColumn<Playlist, Number> playlistSongs;
-    @FXML private TableColumn<Playlist, String> playlistTime;
+    @FXML
+    private TableView<Playlist> playlistTable;
+    @FXML
+    private TableColumn<Playlist, String> playlistName;
+    @FXML
+    private TableColumn<Playlist, Number> playlistSongs;
+    @FXML
+    private TableColumn<Playlist, String> playlistTime;
 
-    @FXML private Label currentlyPlaying;
+    @FXML
+    private TableView<Song> songTable;
+    @FXML
+    private TableColumn<Song, String> selectedPlaylistSong;
 
-    @FXML private Button playSong;
+    @FXML
+    private Label currentlyPlaying;
 
-    @FXML private Slider volumeSlider;
+    @FXML
+    private Button playSong;
+
+    @FXML
+    private Slider volumeSlider;
 
     private Song selectedSong = null;
     private Song playingSong = null;
 
     private Playlist selectedPlaylist = null;
 
-    public MainViewController(){
+    public MainViewController() {
         songManager = new SongManager();
         playlistManager = new PlaylistManager();
         musicPlayer = new MusicPlayer();
@@ -70,20 +85,20 @@ public class MainViewController implements Initializable {
 
     }
 
-    private void initPlaylistTable(){
+    private void initPlaylistTable() {
         playlists = playlistManager.getPlaylists();
-        if(playlists == null)
+        if (playlists == null)
             throw new RuntimeException("Error retrieving playlists from database");
 
-        playlistName.setCellValueFactory(cellData->cellData.getValue().nameProperty());
-        playlistSongs.setCellValueFactory(cellData->{
+        playlistName.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
+        playlistSongs.setCellValueFactory(cellData -> {
             ObservableNumberValue num = new SimpleIntegerProperty(cellData.getValue().getSongs().size());
             return num;
         });
-        playlistTime.setCellValueFactory(cellData->{
+        playlistTime.setCellValueFactory(cellData -> {
 
             double sum = 0;
-            for(Song song : cellData.getValue().getSongs()){
+            for (Song song : cellData.getValue().getSongs()) {
                 sum += song.getTimeInMilis();
             }
 
@@ -92,7 +107,7 @@ public class MainViewController implements Initializable {
 
             StringProperty ret;
 
-            if(seconds < 10)
+            if (seconds < 10)
                 ret = new SimpleStringProperty(minutes + ":0" + seconds);
             else
                 ret = new SimpleStringProperty(minutes + ":" + seconds);
@@ -102,12 +117,13 @@ public class MainViewController implements Initializable {
 
         playlistTable.getSelectionModel().selectedItemProperty().addListener((observableValue, oldVal, newVal) -> {
             selectedPlaylist = newVal;
+            updateSelectedPlaylistSongs();
         });
 
         playlistTable.setItems(playlists);
     }
 
-    private void initAllSongsTable(){
+    private void initAllSongsTable() {
         songs = songManager.getSongs();
         if (songs == null)
             throw new RuntimeException("Error retrieving songs from database");
@@ -120,10 +136,26 @@ public class MainViewController implements Initializable {
         allSongsTable.setItems(songs);
 
         allSongsTable.getSelectionModel().selectedItemProperty().addListener((observableValue, oldVal, newVal) -> {
-            selectedSong = newVal;
-            if(selectedSong != playingSong){
+            if (newVal != null)
+                selectedSong = newVal;
+            if (selectedSong != playingSong) {
                 playSong.setText("⯈");
-            }else{
+            } else {
+                playSong.setText("⏸");
+            }
+        });
+    }
+
+    private void updateSelectedPlaylistSongs() {
+        selectedPlaylistSong.setCellValueFactory(celldata -> celldata.getValue().titleProperty());
+        songTable.setItems(selectedPlaylist.getSongs());
+
+        songTable.getSelectionModel().selectedItemProperty().addListener((observableValue, oldVal, newVal) -> {
+            if(newVal != null)
+                selectedSong = newVal;
+            if (selectedSong != playingSong) {
+                playSong.setText("⯈");
+            } else {
                 playSong.setText("⏸");
             }
         });
@@ -172,19 +204,20 @@ public class MainViewController implements Initializable {
 
     @FXML
     private void handlePlaySong() {
-        if(selectedSong != playingSong) {
-            musicPlayer.playSong(selectedSong);
-            currentlyPlaying.setText(selectedSong.getTitle() + " - " + selectedSong.getArtist());
-            playingSong = selectedSong;
-            playSong.setText("⏸");
-        }
-        else{
-            if(musicPlayer.getIsPaused()){
-                musicPlayer.unpauseSong();
+        if(selectedSong != null) {
+            if (selectedSong != playingSong) {
+                musicPlayer.playSong(selectedSong);
+                currentlyPlaying.setText(selectedSong.getTitle() + " - " + selectedSong.getArtist());
+                playingSong = selectedSong;
                 playSong.setText("⏸");
-            }else{
-                musicPlayer.pauseSong();
-                playSong.setText("⯈");
+            } else {
+                if (musicPlayer.getIsPaused()) {
+                    musicPlayer.unpauseSong();
+                    playSong.setText("⏸");
+                } else {
+                    musicPlayer.pauseSong();
+                    playSong.setText("⯈");
+                }
             }
         }
     }
