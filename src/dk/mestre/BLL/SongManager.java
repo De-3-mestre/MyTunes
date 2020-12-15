@@ -24,4 +24,12 @@ public class SongManager {
         }
     }
 
+    public void addSong(Song song){
+        try {
+            db.insertSong(song);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

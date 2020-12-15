@@ -127,7 +127,7 @@
                         <Insets bottom="5.0" />
                      </VBox.margin>
                   </Label>
-                  <Label fx:id="currentlyPlaying" text="SANG" />
+                  <Label fx:id="currentlyPlaying" text="" />
                </children>
             </VBox>
             <VBox alignment="CENTER_RIGHT" layoutX="110.0" layoutY="10.0" prefHeight="200.0" prefWidth="245.0">
