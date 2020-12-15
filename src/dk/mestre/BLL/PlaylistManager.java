@@ -59,4 +59,14 @@ public class PlaylistManager {
             throw new RuntimeException("Error occurred when trying to add song to playlist...");
         }
     }
+
+    public void removeSong(Playlist selectedPlaylist, Song selectedSong) {
+        selectedPlaylist.removeSong(selectedSong);
+
+        try {
+            db.removeSongFromPlaylist(selectedPlaylist, selectedSong);
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
 }

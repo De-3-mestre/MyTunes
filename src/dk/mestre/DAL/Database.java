@@ -164,7 +164,7 @@ public class Database extends Configuration {
 
         Song song = null;
 
-        while(res.next()){
+        while (res.next()) {
             song = new Song(
                     res.getInt("id"),
                     res.getString("songName"),
@@ -180,5 +180,20 @@ public class Database extends Configuration {
 
         return song;
 
+    }
+
+    public void removeSongFromPlaylist(Playlist selectedPlaylist, Song selectedSong) throws SQLException {
+        Connection connection = getConnection();
+
+        String query = "DELETE FROM SongsInList WHERE songId=? AND playlistId=?";
+
+        PreparedStatement pstmt = connection.prepareStatement(query);
+        pstmt.setInt(1, selectedSong.getId());
+        pstmt.setInt(2, selectedPlaylist.getId());
+
+        pstmt.execute();
+
+        connection.close();
+        pstmt.close();
     }
 }

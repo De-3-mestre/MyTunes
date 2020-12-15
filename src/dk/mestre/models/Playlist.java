@@ -29,6 +29,12 @@ public class Playlist {
         this.songs.add(song);
     }
 
+    public void removeSong(Song song){
+        if(this.songs.contains(song)){
+            this.songs.remove(song);
+        }
+    }
+
     public void addSongs(List<Song> songs){
         this.songs.addAll(songs);
     }
