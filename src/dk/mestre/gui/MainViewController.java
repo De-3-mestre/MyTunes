@@ -68,10 +68,14 @@ public class MainViewController implements Initializable {
 
     private Playlist selectedPlaylist = null;
 
+    private boolean selectedFromPlaylist;
+
     public MainViewController() {
         songManager = new SongManager();
         playlistManager = new PlaylistManager();
         musicPlayer = new MusicPlayer();
+
+        selectedFromPlaylist = false;
     }
 
     @Override
@@ -119,6 +123,7 @@ public class MainViewController implements Initializable {
 
         playlistTable.getSelectionModel().selectedItemProperty().addListener((observableValue, oldVal, newVal) -> {
             selectedPlaylist = newVal;
+            selectedFromPlaylist = true;
             updateSelectedPlaylistSongs();
         });
 
@@ -138,8 +143,11 @@ public class MainViewController implements Initializable {
         allSongsTable.setItems(songs);
 
         allSongsTable.getSelectionModel().selectedItemProperty().addListener((observableValue, oldVal, newVal) -> {
-            if (newVal != null)
+            if (newVal != null) {
                 selectedSong = newVal;
+                selectedFromPlaylist = false;
+            }
+
             if (selectedSong != playingSong) {
                 playSong.setText("⯈");
             } else {
@@ -154,8 +162,10 @@ public class MainViewController implements Initializable {
         songTable.setItems(selectedPlaylist.getSongs());
 
         songTable.getSelectionModel().selectedItemProperty().addListener((observableValue, oldVal, newVal) -> {
-            if (newVal != null)
+            if (newVal != null) {
                 selectedSong = newVal;
+                selectedFromPlaylist = true;
+            }
             if (selectedSong != playingSong) {
                 playSong.setText("⯈");
             } else {
@@ -235,6 +245,13 @@ public class MainViewController implements Initializable {
 
     @FXML
     private void handleMoveSongToPlaylist() {
+        //can't add nothing to nothing
+        if (selectedSong != null && selectedPlaylist != null){
+            //Can't add song from the playlist
+            if(!selectedFromPlaylist && !selectedPlaylist.getSongs().contains(selectedSong)){
+                playlistManager.addSong(selectedPlaylist, selectedSong);
+            }
+        }
     }
 
 }

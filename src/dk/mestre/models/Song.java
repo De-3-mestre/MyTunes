@@ -28,6 +28,7 @@ public class Song {
      * @see File
      **/
     public Song(int id, String title, String path, String category, String artist) {
+        this.id = id;
         this.title = new SimpleStringProperty(title);
         this.path = new SimpleStringProperty(path);
         this.category = new SimpleStringProperty(category);

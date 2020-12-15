@@ -47,4 +47,16 @@ public class PlaylistManager {
         return songs;
     }
 
+    public void addSong(Playlist selectedPlaylist, Song selectedSong) {
+        selectedPlaylist.addSong(selectedSong);
+
+        try {
+            System.out.println("Playlist: " + selectedPlaylist.getName() + " " + selectedPlaylist.getId() +
+                               " | Song: " + selectedSong.getTitle() + " " + selectedSong.getId());
+            db.insertSongToPlaylist(selectedPlaylist, selectedSong);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Error occurred when trying to add song to playlist...");
+        }
+    }
 }

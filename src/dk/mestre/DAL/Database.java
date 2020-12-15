@@ -124,10 +124,10 @@ public class Database extends Configuration {
         return pairs;
     }
 
-    public void insertSongToPlaylist(Song song, Playlist playlist) throws SQLException {
+    public void insertSongToPlaylist(Playlist playlist, Song song) throws SQLException {
         Connection connection = getConnection();
 
-        PreparedStatement pstmt = connection.prepareStatement("INSERT INTO SongsInPlaylist (songId, playlistId) VALUES (?, ?)");
+        PreparedStatement pstmt = connection.prepareStatement("INSERT INTO SongsInList (songId, playlistId) VALUES (?, ?)");
         pstmt.setInt(1, song.getId());
         pstmt.setInt(2, playlist.getId());
 
