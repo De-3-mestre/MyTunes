@@ -226,6 +226,12 @@ public class MainViewController implements Initializable {
 
     @FXML
     private void handleDeleteSong() {
+        if(selectedSong != null){
+            if(!selectedFromPlaylist){
+                songManager.removeSong(selectedSong);
+                songs.remove(selectedSong);
+            }
+        }
     }
 
     @FXML

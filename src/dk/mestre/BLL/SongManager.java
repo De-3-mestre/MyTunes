@@ -32,4 +32,11 @@ public class SongManager {
         }
     }
 
+    public void removeSong(Song selectedSong) {
+        try {
+            db.deleteSong(selectedSong);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

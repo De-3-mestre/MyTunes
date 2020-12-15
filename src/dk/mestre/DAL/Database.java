@@ -196,4 +196,22 @@ public class Database extends Configuration {
         connection.close();
         pstmt.close();
     }
+
+    public void deleteSong(Song selectedSong) throws SQLException {
+        Connection connection = getConnection();
+
+        String removeFromAllLists = "DELETE FROM SongsInList WHERE songId=?";
+        PreparedStatement removeList = connection.prepareStatement(removeFromAllLists);
+        removeList.setInt(1, selectedSong.getId());
+        removeList.execute();
+
+        String removeSongFromAll = "DELETE FROM Song WHERE id=?";
+        PreparedStatement removeSong = connection.prepareStatement(removeSongFromAll);
+        removeSong.setInt(1, selectedSong.getId());
+        removeSong.execute();
+
+        connection.close();
+        removeSong.close();
+        removeList.close();
+    }
 }

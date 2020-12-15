@@ -10,12 +10,15 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 
+    public static Stage mainStage;
+
     public static void main(String[] args) {
         launch(args);
     }
 
     @Override
     public void start(Stage stage) throws Exception {
+        Main.mainStage = stage;
         Parent root = FXMLLoader.load(getClass().getResource("gui/MainView.fxml"));
         Scene scene = new Scene(root);
 
